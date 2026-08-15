@@ -79,9 +79,9 @@ Two hard-won details:
   `--help` files a backlog entry that literally says `--help` — this happened on
   2026-07-29 and had to be cleaned up.
 - Before writing into another project's repo, run `check-project-busy <project>`. The
-  `focus-commit` guard that used to apply here is moot: `FOCUS.md`, `QUESTIONS.md` and
-  `BLOCKERS.md` are retired ecosystem-wide (`hf7y/scheduler#66`) and this repo's copy is
-  a pointer stub with no content to lose.
+  `focus-commit` guard that used to apply here is moot: the coordination files it
+  protected are retired ecosystem-wide (`hf7y/scheduler#66`) and deleted from this repo;
+  use the project's GitHub issues instead.
 
 **Findings, backlog and open questions go to GitHub issues** —
 https://github.com/hf7y/front-door/issues. Not to a markdown file in this repo. That is
