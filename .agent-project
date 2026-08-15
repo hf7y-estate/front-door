@@ -1,0 +1,9 @@
+# .agent-project -- this repo is an agent PROJECT, not merely a repository.
+#
+# The registry is self-declared (Zach, 2026-08-12): a repo is a project iff it
+# carries this file on its default branch. Retire by deleting it, or by
+# archiving the repo.
+#
+# Read by realisateur/bin/cut-verb-build.sh, which resolves this path across
+# every non-archived repo in one GraphQL query, and by realisateur/bin/
+# silence-audit.sh, which audits the trees that declare themselves.
