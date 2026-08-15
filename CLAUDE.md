@@ -69,18 +69,24 @@ entry, something in `~/.local/bin`, a `~/.claude` hook, a marker file — then:
 notify-senechal '<what changed, where, who owns it>'
 ```
 
-Do it without being asked. Also record it in [`.scheduler/FOCUS.md`](.scheduler/FOCUS.md)
-under the shared-host footprint, with **teardown steps**, and retire entries there when
-you remove the thing rather than leaving them live.
+Do it without being asked. Also record it in [`FOOTPRINT.md`](FOOTPRINT.md), with
+**teardown steps**, and retire entries there when you remove the thing rather than
+leaving them live.
 
 Two hard-won details:
 
 - **`notify-senechal` takes no flags.** Its argument is the note. Running it with
   `--help` files a backlog entry that literally says `--help` — this happened on
   2026-07-29 and had to be cleaned up.
-- Before writing into another project's repo, run `check-project-busy <project>`, and use
-  `focus-commit` rather than bare `git add`/`commit`/`push` for `FOCUS.md` — those files
-  have multiple writers and the bare sequence has silently lost content before.
+- Before writing into another project's repo, run `check-project-busy <project>`. The
+  `focus-commit` guard that used to apply here is moot: `FOCUS.md`, `QUESTIONS.md` and
+  `BLOCKERS.md` are retired ecosystem-wide (`hf7y/scheduler#66`) and this repo's copy is
+  a pointer stub with no content to lose.
+
+**Findings, backlog and open questions go to GitHub issues** —
+https://github.com/hf7y/front-door/issues. Not to a markdown file in this repo. That is
+the ecosystem rule as of 2026-08-07 (`hf7y/scheduler#66`); writing a new prose surface
+is how the last one grew to 162 lines of stale claims.
 
 Prefer not to edit another project's config at all. front-door edited `~/.hermes/.env`
 to fix a broken JID; senechal's own rules would have shipped that as a remedy script for
