@@ -11,32 +11,52 @@ an issue. Add and retire entries here as things are installed and removed.
 
 ## On `mandark`
 
+Nothing installed, currently. `front-door-watch.service` is **retired**: removed
+2026-09-18 by Zach's direct ruling ("front-door service needs to be ripped
+out"), running the exact teardown below. Verified after:
+`systemctl --user list-unit-files | grep -c front-door` = 0, and the unit file
+gone. Filed to senechal as a `footprint-correction` moving
+`front-door-watch-unit` from `retiring` to `retired` (hf7y/senechal#937,
+closed/absorbed). Full history in
+[#8](https://github.com/hf7y/front-door/issues/8).
+
+<details>
+<summary>Retired: <code>front-door-watch.service</code> (2026-07-29 → 2026-09-18)</summary>
+
 | What | Where | State |
 |---|---|---|
-| `front-door-watch.service` | `~/.config/systemd/user/` + `default.target.wants` symlink | enabled, active |
+| `front-door-watch.service` | `~/.config/systemd/user/` + `default.target.wants` symlink | removed |
 
-Source of truth is [`etc/front-door-watch.service`](etc/front-door-watch.service)
-in this repo; the installed copy is a deployment of it. Runs
-`bin/watch --notify -i 120`, `Restart=always`. Polls `hf7y/front-door` and
-relays knocks, amendment PRs, failed CI, and milestone deadlines to WhatsApp via
-`bin/ping`.
+Source of truth was [`etc/front-door-watch.service`](etc/front-door-watch.service)
+in this repo; the installed copy was a deployment of it. Ran
+`bin/watch --notify -i 120`, `Restart=always`. Polled `hf7y/front-door` and
+relayed knocks, amendment PRs, failed CI, and milestone deadlines to WhatsApp
+via `bin/ping`.
 
-It exists because **GitHub Actions cannot reach the WhatsApp bridge** — the
-bridge binds `127.0.0.1` only — so mandark has to be the bridge.
+It existed because **GitHub Actions cannot reach the WhatsApp bridge** — the
+bridge binds `127.0.0.1` only — so mandark had to be the bridge.
 
-Teardown:
+Teardown, run verbatim on 2026-09-18:
 
 ```
 systemctl --user disable --now front-door-watch.service
 rm ~/.config/systemd/user/front-door-watch.service
+systemctl --user daemon-reload
 ```
 
-*Verified 2026-07-29 via `systemctl --user is-active/is-enabled`, `ss -ltn`
-(bridge on 127.0.0.1:3000), and an end-to-end relay test where a real GitHub PR
-event produced a WhatsApp message.*
+*Installed 2026-07-29, verified via `systemctl --user is-active/is-enabled`,
+`ss -ltn` (bridge on 127.0.0.1:3000), and an end-to-end relay test where a real
+GitHub PR event produced a WhatsApp message. It had gone inert well before
+removal — `is-active: inactive`, no timer, and `WorkingDirectory` pointing at a
+checkout that no longer existed — so nothing was degrading while the coupled
+teardown below waited.*
 
-**Open:** whether to keep or retire this under the mandark→monkey teardown is
-[#8](https://github.com/hf7y/front-door/issues/8).
+</details>
+
+**Still open:** the coupled `~/.hermes/.env` revert named in #8's title was
+**not** done as part of this teardown — removing the unit and reverting the
+`.env` were coupled in the title, not in the mechanism — and #8 stays open for
+it.
 
 ## Off-machine
 
